@@ -221,3 +221,7 @@ __marimo__/
 
 #documentation
 docs/reference
+
+#YOLO's outputs
+runs/
+yolo26n.pt
