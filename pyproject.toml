@@ -19,12 +19,8 @@ dependencies = [
     "ultralytics>=8.4.207",
 ]
 
-[project.scripts]
-comp4330sef-project = "comp4330sef_project:main"
-
-[build-system]
-requires = ["uv_build>=0.13.7,<0.14.0"]
-build-backend = "uv_build"
+[tool.uv]
+package = false
 
 [tool.uv.sources]
 torch = [
