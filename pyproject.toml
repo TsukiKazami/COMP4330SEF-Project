@@ -5,6 +5,7 @@ description = "A Systematic Evaluation of YOLOv8: Model Scaling, Parameter Sensi
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "mapillary>=1.0.16",
     "openpyxl>=3.1.5",
     "pandas>=3.1.1",
     "pycocotools>=2.0.11",
