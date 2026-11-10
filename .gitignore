@@ -228,3 +228,6 @@ yolo26n.pt
 
 # Model weights (large binaries, only the manifest is committed)
 weights/*.pt
+
+# Downloaded sample datasets
+datasets/

@@ -26,6 +26,9 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/comp4330sef"]
 
+[project.scripts]
+comp4330 = "comp4330sef.cli:main"
+
 [tool.uv]
 package = true
 

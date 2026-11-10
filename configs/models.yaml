@@ -1,0 +1,22 @@
+# Phase 0
+
+defaults:
+  imgsz: 640
+  conf: 0.25
+  iou: 0.7
+  half: false
+  max_det: 300 
+  batch: 1
+  device: 0
+  seed: 0
+
+models:
+  yolov8n:
+    weights: weights/yolov8n.pt
+  yolov8s:
+    weights: weights/yolov8s.pt
+  yolov8m:
+    weights: weights/yolov8m.pt
+
+dummy:
+  data: coco8.yaml
