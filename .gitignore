@@ -225,3 +225,6 @@ docs/reference
 #YOLO's outputs
 runs/
 yolo26n.pt
+
+# Model weights (large binaries, only the manifest is committed)
+weights/*.pt

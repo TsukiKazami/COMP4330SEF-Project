@@ -1,0 +1,26 @@
+{
+  "yolov8n": {
+    "file": "weights/yolov8n.pt",
+    "sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+    "bytes": 6549796,
+    "params": 3157200,
+    "params_expected": 3157200,
+    "params_match": true
+  },
+  "yolov8s": {
+    "file": "weights/yolov8s.pt",
+    "sha256": "1f47a78bf100391c2a140b7ac73a1caae18c32779be7d310658112f7ac9aa78a",
+    "bytes": 22588772,
+    "params": 11166560,
+    "params_expected": 11166560,
+    "params_match": true
+  },
+  "yolov8m": {
+    "file": "weights/yolov8m.pt",
+    "sha256": "5d4a90cdc7a21786cc59cd19778e9eafff836df9e2da32524737c7ee6efe4fe5",
+    "bytes": 52136884,
+    "params": 25902640,
+    "params_expected": 25902624,
+    "params_match": true
+  }
+}
