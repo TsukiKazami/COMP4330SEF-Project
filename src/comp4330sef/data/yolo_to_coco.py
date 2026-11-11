@@ -71,16 +71,21 @@ def yolo_split_to_coco(
             cx, cy, norm_w, norm_h = (float(value) for value in parts[1:5])
             box_w = norm_w * width
             box_h = norm_h * height
+            bbox = [
+                round((cx - norm_w / 2) * width, 2),
+                round((cy - norm_h / 2) * height, 2),
+                round(box_w, 2),
+                round(box_h, 2),
+            ]
+            x1, y1, bw, bh = bbox
             annotations.append(
                 {
                     "id": annotation_id,
                     "image_id": image_id,
                     "category_id": class_index + 1,
-                    "bbox": [
-                        round((cx - norm_w / 2) * width, 2),
-                        round((cy - norm_h / 2) * height, 2),
-                        round(box_w, 2),
-                        round(box_h, 2),
+                    "bbox": bbox,
+                    "segmentation": [
+                        [x1, y1, x1 + bw, y1, x1 + bw, y1 + bh, x1, y1 + bh]
                     ],
                     "area": round(box_w * box_h, 2),
                     "iscrowd": 0,
