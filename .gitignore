@@ -231,3 +231,10 @@ weights/*.pt
 
 # Downloaded sample datasets
 datasets/
+
+# Local raw / normalised imagery
+data/raw/
+data/images/
+
+# Local caches
+.cache/
