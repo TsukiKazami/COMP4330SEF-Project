@@ -9,7 +9,7 @@ from ultralytics.data.utils import check_det_dataset
 
 from comp4330sef.config import REPO_ROOT, load_models_config, rel_path, resolve_model
 from comp4330sef.eval.results import detections_to_coco, image_id_from_stem, validate_records
-from comp4330sef.eval.runcard import new_run_id, write_runcard
+from comp4330sef.eval.runcard import new_run_id, precision_check, write_runcard
 
 
 def _sample_images(data: dict[str, Any], split: str, limit: int) -> list[Path]:
@@ -42,12 +42,14 @@ def run_dummy(config_path: str, model_name: str, limit: int, split: str) -> int:
     images = _sample_images(data, split, limit)
 
     model = YOLO(str(cfg.weights))
+    precision = precision_check(model)
+    if not precision["ok"]:
+        raise SystemExit(f"expected fp32 weights, got {precision['actual']}")
     results = model.predict(
         source=[str(path) for path in images],
         imgsz=cfg.imgsz,
         conf=cfg.conf,
         iou=cfg.iou,
-        half=cfg.half,
         max_det=cfg.max_det,
         batch=cfg.batch,
         device=cfg.device,
@@ -98,6 +100,7 @@ def run_dummy(config_path: str, model_name: str, limit: int, split: str) -> int:
             },
             "detection_stats": stats,
             "mean_stage_ms": timing,
+            "precision": precision,
         },
     )
 

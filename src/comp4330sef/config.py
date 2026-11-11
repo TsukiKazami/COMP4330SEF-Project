@@ -71,6 +71,10 @@ def resolve_model(cfg: dict[str, Any], name: str) -> EvalConfig:
         raise KeyError(f"unknown model {name!r}; available: {sorted(models)}")
 
     merged = {**(cfg.get("defaults") or {}), **models[name]}
+    if bool(merged.get("half", False)):
+        raise ValueError(
+            "half=true is not supported: this project evaluates fp32 only"
+        )
     weights = Path(merged["weights"])
     if not weights.is_absolute():
         weights = REPO_ROOT / weights

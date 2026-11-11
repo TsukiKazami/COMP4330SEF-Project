@@ -89,6 +89,16 @@ def package_versions(names: tuple[str, ...] = _PACKAGES) -> dict[str, str]:
     return versions
 
 
+def model_dtype(yolo_model: Any) -> str:
+    parameter = next(yolo_model.model.parameters())
+    return str(parameter.dtype).replace("torch.", "")
+
+
+def precision_check(yolo_model: Any, expected: str = "float32") -> dict[str, Any]:
+    actual = model_dtype(yolo_model)
+    return {"expected": expected, "actual": actual, "ok": actual == expected}
+
+
 def new_run_id(prefix: str) -> str:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return f"{prefix}_{stamp}_{git_state()['short_sha']}"
