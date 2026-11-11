@@ -32,6 +32,21 @@ def build_parser() -> argparse.ArgumentParser:
         "--no-reference", action="store_true", help="skip the Ultralytics cross-check"
     )
 
+    rq1 = subparsers.add_parser("rq1", help="RQ1: accuracy/speed scaling across yolov8 n/s/m")
+    rq1.add_argument("--config", default="configs/models.yaml")
+    rq1.add_argument("--models", nargs="+", default=["yolov8n", "yolov8s", "yolov8m"])
+    rq1.add_argument("--data", default="coco8.yaml", help="Ultralytics dataset yaml")
+    rq1.add_argument("--split", default="val")
+    rq1.add_argument("--gt", default=None, help="COCO annotation json; overrides --data")
+    rq1.add_argument("--images", default=None, help="image root for --gt")
+    rq1.add_argument("--tag", default=None, help="dataset label used in file names")
+    rq1.add_argument("--table", default=None)
+    rq1.add_argument("--per-class-table", default=None)
+    rq1.add_argument("--marginal-table", default=None)
+    rq1.add_argument("--acc-batch", type=int, default=8)
+    rq1.add_argument("--warmup", type=int, default=10)
+    rq1.add_argument("--iters", type=int, default=100)
+
     return parser
 
 
@@ -48,8 +63,7 @@ def main(argv: list[str] | None = None) -> int:
 
         result = score_run(args.gt, args.pred, operating_conf=args.conf, match_iou=args.iou)
         print(format_result(result))
-        consistency = result.get("consistency") or {}
-        if not all(consistency.values()):
+        if not all((result.get("consistency") or {}).values()):
             print("\n[warn] P/R/F1 counts are not internally consistent")
         return 0
 
@@ -57,5 +71,24 @@ def main(argv: list[str] | None = None) -> int:
         from comp4330sef.eval.selfcheck import run_selfcheck
 
         return run_selfcheck(args.config, args.model, args.split, reference=not args.no_reference)
+
+    if args.command == "rq1":
+        from comp4330sef.eval.rq1 import run_rq1
+
+        return run_rq1(
+            config_path=args.config,
+            models=tuple(args.models),
+            data=args.data,
+            split=args.split,
+            gt=args.gt,
+            images=args.images,
+            tag=args.tag,
+            table=args.table,
+            per_class_table=args.per_class_table,
+            marginal_table=args.marginal_table,
+            acc_batch=args.acc_batch,
+            warmup=args.warmup,
+            iterations=args.iters,
+        )
 
     raise SystemExit(f"unknown command {args.command!r}")
