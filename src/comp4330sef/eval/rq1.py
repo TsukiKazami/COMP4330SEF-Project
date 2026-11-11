@@ -272,7 +272,7 @@ def run_rq1(
     *,
     config_path: str = "configs/models.yaml",
     models: Sequence[str] = ("yolov8n", "yolov8s", "yolov8m"),
-    data: str = "coco8.yaml",
+    data: str = "datasets/coco8.yaml",
     split: str = "val",
     gt: str | None = None,
     images: str | None = None,

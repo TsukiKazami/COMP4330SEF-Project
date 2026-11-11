@@ -37,8 +37,8 @@ def run_dummy(config_path: str, model_name: str, limit: int, split: str) -> int:
     cfg = resolve_model(cfg_dict, model_name)
 
     dummy_cfg = cfg_dict.get("dummy") or {}
-    data_name = dummy_cfg.get("data", "coco8.yaml")
-    data = check_det_dataset(data_name)
+    data_name = dummy_cfg.get("data", "datasets/coco8.yaml")
+    data = check_det_dataset(data_name, autodownload=False)
     images = _sample_images(data, split, limit)
 
     model = YOLO(str(cfg.weights))

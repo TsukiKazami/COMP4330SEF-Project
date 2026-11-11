@@ -34,11 +34,11 @@ def _resolve(path: str | Path) -> Path:
 
 
 def from_yolo_yaml(
-    data_name: str = "coco8.yaml",
+    data_name: str = "datasets/coco8.yaml",
     split: str = "val",
     name: str | None = None,
 ) -> EvalSet:
-    data = check_det_dataset(data_name)
+    data = check_det_dataset(data_name, autodownload=False)
     names = names_to_dict(data["names"])
 
     entry = data.get(split)

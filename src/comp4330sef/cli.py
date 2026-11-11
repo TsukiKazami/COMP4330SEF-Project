@@ -35,7 +35,7 @@ def build_parser() -> argparse.ArgumentParser:
     rq1 = subparsers.add_parser("rq1", help="RQ1: accuracy/speed scaling across yolov8 n/s/m")
     rq1.add_argument("--config", default="configs/models.yaml")
     rq1.add_argument("--models", nargs="+", default=["yolov8n", "yolov8s", "yolov8m"])
-    rq1.add_argument("--data", default="coco8.yaml", help="Ultralytics dataset yaml")
+    rq1.add_argument("--data", default="datasets/coco8.yaml", help="Ultralytics dataset yaml")
     rq1.add_argument("--split", default="val")
     rq1.add_argument("--gt", default=None, help="COCO annotation json; overrides --data")
     rq1.add_argument("--images", default=None, help="image root for --gt")

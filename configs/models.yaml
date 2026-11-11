@@ -19,7 +19,7 @@ models:
     weights: weights/yolov8m.pt
 
 dummy:
-  data: coco8.yaml
+  data: datasets/coco8.yaml
 
 eval:
   conf_floor: 0.001

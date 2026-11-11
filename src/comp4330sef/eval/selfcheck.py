@@ -77,8 +77,8 @@ def run_selfcheck(config_path: str, model_name: str, split: str, reference: bool
     match_iou = float(eval_cfg.get("iou_match", 0.5))
 
     dummy_cfg = cfg_dict.get("dummy") or {}
-    data_name = dummy_cfg.get("data", "coco8.yaml")
-    data = check_det_dataset(data_name)
+    data_name = dummy_cfg.get("data", "datasets/coco8.yaml")
+    data = check_det_dataset(data_name, autodownload=False)
     names = names_to_dict(data["names"])
     images = _split_images(data, split)
     labels_dir = labels_dir_for(images[0].parent)
