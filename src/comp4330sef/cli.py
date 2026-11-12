@@ -63,6 +63,14 @@ def build_parser() -> argparse.ArgumentParser:
     rq2.add_argument("--answer", default=None)
     rq2.add_argument("--acc-batch", type=int, default=8)
 
+    rq3 = subparsers.add_parser("rq3", help="RQ3: TIDE decomposition and error taxonomy")
+    rq3.add_argument("--gt", default="data/annotations/hk_test_coco.json")
+    rq3.add_argument("--tag", default="hk_test")
+    rq3.add_argument("--models", nargs="+", default=["yolov8n", "yolov8s", "yolov8m"])
+    rq3.add_argument("--nms-iou", type=float, default=0.3)
+    rq3.add_argument("--conf", type=float, default=0.25)
+    rq3.add_argument("--match-iou", type=float, default=0.5)
+
     return parser
 
 
@@ -130,6 +138,18 @@ def main(argv: list[str] | None = None) -> int:
             best_table=args.best_table,
             answer_path=args.answer,
             acc_batch=args.acc_batch,
+        )
+
+    if args.command == "rq3":
+        from comp4330sef.analysis.tide_run import run_rq3
+
+        return run_rq3(
+            gt=args.gt,
+            tag=args.tag,
+            models=tuple(args.models),
+            nms_iou=args.nms_iou,
+            conf=args.conf,
+            match_iou=args.match_iou,
         )
 
     raise SystemExit(f"unknown command {args.command!r}")
