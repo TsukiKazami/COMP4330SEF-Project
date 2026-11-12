@@ -34,7 +34,8 @@ URBAN_REGIONS: dict[str, tuple[float, float, float, float]] = {
     # --- Hong Kong Island ---
     "central-sheung-wan": (114.1450, 22.2790, 114.1720, 22.2900),
     "wan-chai-causeway-bay": (114.1700, 22.2750, 114.1920, 22.2850),
-    "north-point-quarry-bay": (114.1900, 22.2830, 114.2200, 22.2950),
+    "north-point": (114.1900, 22.2830, 114.2060, 22.2950),
+    "quarry-bay-taikoo": (114.2060, 22.2830, 114.2200, 22.2950),
     "kennedy-town-sai-ying-pun": (114.1200, 22.2800, 114.1480, 22.2920),
     "chai-wan": (114.2200, 22.2600, 114.2450, 22.2750),
     "aberdeen-wong-chuk-hang": (114.1550, 22.2450, 114.1750, 22.2600),
@@ -491,7 +492,7 @@ def run_fetch(args: argparse.Namespace) -> int:
     regions = _regions_from_args(args)
     allowed = {name for name, _ in regions}
 
-    if args.force:
+    if args.force and not args.dry_run:
         cleared = 0
         for folder in (IMAGES_DIR, TRIAGE_DIR):
             if folder.exists():
@@ -603,6 +604,12 @@ def run_fetch(args: argparse.Namespace) -> int:
             save_cache(records)
             time.sleep(args.request_pause)
 
+    region_totals: dict[str, int] = defaultdict(int)
+    for record in records.values():
+        name = record.get("region")
+        if name in allowed:
+            region_totals[name] += 1
+
     print(f"\nurban records: {len(urban_pool())}")
     if failures:
         print(f"[warn] {len(failures)} tile(s) failed and were skipped")
@@ -613,8 +620,7 @@ def run_fetch(args: argparse.Namespace) -> int:
         print("\n[dry-run] metadata only; nothing downloaded")
         print("\nper-region records:")
         for name, _ in regions:
-            print(f"  {name:<28} {region_counts[name]:>4}")
-        return 0
+            print(f"  {name:<28} {region_totals[name]:>4}")
 
     pool = urban_pool()
     by_sequence: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -733,7 +739,7 @@ def run_fetch(args: argparse.Namespace) -> int:
         "regions": {
             name: {
                 "bbox": [round(float(value), 4) for value in bbox],
-                "records": region_counts.get(name, 0),
+                "records": region_totals.get(name, 0),
             }
             for name, bbox in regions
         },
@@ -748,7 +754,7 @@ def run_fetch(args: argparse.Namespace) -> int:
         },
         "counts": {
             "urban_records": len(pool),
-            "regions_with_data": sum(1 for count in region_counts.values() if count),
+            "regions_with_data": sum(1 for count in region_totals.values() if count),
             "sequences": len(groups),
             "shortlisted": len(shortlist),
             "accepted": len(accepted),
@@ -831,6 +837,10 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.sheets_only:
         return run_sheets(args)
+
+    # A dry run writes nothing, so it must not be blocked by the overwrite guard.
+    if args.dry_run:
+        return run_fetch(args)
 
     existing = [
         path
