@@ -236,6 +236,7 @@ datasets/
 data/raw/
 data/images/
 data/triage/
+data/annotations/triage.csv
 
 # Local caches
 .cache/
