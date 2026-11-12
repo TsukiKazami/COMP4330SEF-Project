@@ -134,6 +134,7 @@ def _evaluate_model(
     config_path: str,
     conf_floor: float,
     match_iou: float,
+    restrict_classes: bool,
     acc_batch: int,
     warmup: int,
     iterations: int,
@@ -172,7 +173,13 @@ def _evaluate_model(
     records = detections_to_coco(results, eval_set.image_ids)
     detections_path = run_dir / "detections.json"
     detections_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
-    scored = score_run(gt_path, records, operating_conf=cfg.conf, match_iou=match_iou)
+    scored = score_run(
+        gt_path,
+        records,
+        operating_conf=cfg.conf,
+        match_iou=match_iou,
+        restrict_to_gt_classes=restrict_classes,
+    )
 
     timing_image = eval_set.images[0]
     image = cv2.imread(str(timing_image))
@@ -215,6 +222,7 @@ def _evaluate_model(
         "images": len(eval_set.images),
         "gt_instances": scored["counts"]["gt_instances"],
         "detections": scored["counts"]["detections"],
+        "detections_evaluated": scored["counts"]["detections_evaluated"],
         "run_id": run_id,
         "git_sha": git_state()["short_sha"],
         "timestamp_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -232,6 +240,7 @@ def _evaluate_model(
             "acc_batch": acc_batch,
             "conf_floor": conf_floor,
             "match_iou": match_iou,
+            "operating_point_filter": scored["operating_point_filter"],
             "warmup": warmup,
             "iterations": iterations,
             "timing_image": rel_path(timing_image),
@@ -282,6 +291,7 @@ def run_rq1(
     marginal_table: str | None = None,
     acc_batch: int = 8,
     warmup: int = 10,
+    restrict_classes: bool = True,
     iterations: int = 100,
 ) -> int:
     cfg_dict = load_models_config(config_path)
@@ -300,6 +310,7 @@ def run_rq1(
     )
     print(f"protocol : conf_floor={conf_floor}  acc_batch={acc_batch}  "
           f"warmup={warmup}  iters={iterations}")
+    print(f"filter   : P/R/F1 on {'GT categories only' if restrict_classes else 'all classes'}")
     if eval_set.name.lower() not in HK_NAMES:
         print("note     : sample dataset — this validates the pipeline only; "
               "the RQ1 answer needs the Hong Kong test set (--gt ... --tag hk_test)")
@@ -320,6 +331,7 @@ def run_rq1(
             acc_batch=acc_batch,
             warmup=warmup,
             iterations=iterations,
+            restrict_classes=restrict_classes,
         )
         print(format_result(scored))
         print(

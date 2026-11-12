@@ -23,6 +23,7 @@ def build_parser() -> argparse.ArgumentParser:
     score.add_argument("--pred", required=True, help="COCO detection results json")
     score.add_argument("--conf", type=float, default=0.25, help="operating point for P/R/F1")
     score.add_argument("--iou", type=float, default=0.5, help="matching IoU for P/R/F1")
+    score.add_argument("--all-classes", action="store_true", help="keep off-protocol classes in P/R/F1")
 
     selfcheck = subparsers.add_parser("selfcheck", help="validate our metrics against Ultralytics val")
     selfcheck.add_argument("--config", default="configs/models.yaml")
@@ -46,6 +47,7 @@ def build_parser() -> argparse.ArgumentParser:
     rq1.add_argument("--acc-batch", type=int, default=8)
     rq1.add_argument("--warmup", type=int, default=10)
     rq1.add_argument("--iters", type=int, default=100)
+    rq1.add_argument("--all-classes", action="store_true", help="keep off-protocol classes in P/R/F1")
 
     return parser
 
@@ -61,7 +63,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "score":
         from comp4330sef.eval.score import format_result, score_run
 
-        result = score_run(args.gt, args.pred, operating_conf=args.conf, match_iou=args.iou)
+        result = score_run(
+            args.gt,
+            args.pred,
+            operating_conf=args.conf,
+            match_iou=args.iou,
+            restrict_to_gt_classes=not args.all_classes,
+        )
         print(format_result(result))
         if not all((result.get("consistency") or {}).values()):
             print("\n[warn] P/R/F1 counts are not internally consistent")
@@ -89,6 +97,7 @@ def main(argv: list[str] | None = None) -> int:
             acc_batch=args.acc_batch,
             warmup=args.warmup,
             iterations=args.iters,
+            restrict_classes=not args.all_classes,
         )
 
     raise SystemExit(f"unknown command {args.command!r}")

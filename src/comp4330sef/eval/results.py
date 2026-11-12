@@ -15,7 +15,11 @@ def image_id_from_stem(path: str | Path) -> int | None:
     return int(stem) if stem.isdigit() else None
 
 
-def detections_to_coco(results: Sequence[Any], image_ids: Sequence[int]) -> list[dict[str, Any]]:
+def detections_to_coco(
+    results: Sequence[Any],
+    image_ids: Sequence[int],
+    class_ids: Sequence[int] | None = None,
+) -> list[dict[str, Any]]:
     if len(results) != len(image_ids):
         raise ValueError(f"got {len(results)} results but {len(image_ids)} image ids")
 
@@ -28,10 +32,19 @@ def detections_to_coco(results: Sequence[Any], image_ids: Sequence[int]) -> list
         scores = boxes.conf.cpu().numpy().astype(float)
         classes = boxes.cls.cpu().numpy().astype(int)
         for (x1, y1, x2, y2), score, cls in zip(xyxy, scores, classes):
+            index = int(cls)
+            if class_ids is None:
+                category = category_id(index)
+            else:
+                if not 0 <= index < len(class_ids):
+                    raise ValueError(
+                        f"class index {index} outside class_ids with {len(class_ids)} entries"
+                    )
+                category = int(class_ids[index])
             records.append(
                 {
                     "image_id": int(image_id),
-                    "category_id": category_id(cls),
+                    "category_id": category,
                     "bbox": [
                         round(float(x1), 2),
                         round(float(y1), 2),
