@@ -40,29 +40,44 @@ critical path. Only revive it if the Roboflow labels turn out unusable.
 
 ### 2.1 Class mapping
 
-The dataset has 10 local classes; map them to 5 COCO classes. **The COCO ids are
-mandatory** (`car=3, motorcycle=4, bus=6, train=7, truck=8`) because Ultralytics
-returns `class_index + 1 = COCO id`; any other numbering silently gives mAP = 0.
+The v3 COCO export ships 18 category entries, but only six carry a real vehicle
+name; the other twelve are README / dataset-version strings, and their 8,711
+boxes (on 1,755 images) are dropped. The six that survive map to **4** COCO
+classes:
 
-| Dataset class | COCO class | COCO id |
-|---|---|---|
-| `car`, `taxi` | car | 3 |
-| `motorcycle` | motorcycle | 4 |
-| `bus`, `mini bus` | bus | 6 |
-| `train`, `tram` | train | 7 |
-| `truck`, `heavy truck`, `light truck` | truck | 8 |
-| `vehicle` (ambiguous) | **dropped** | — |
+| Dataset class | COCO class | COCO id | boxes |
+|---|---|---|---|
+| `car`, `taxi` | car | 3 | 3,755 |
+| `motorcycle` | motorcycle | 4 | 408 |
+| `bus`, `mini bus` | bus | 6 | 921 |
+| `truck` | truck | 8 | 871 |
+| the 12 corrupted entries | dropped | — | 8,711 |
 
-Consequence to state in the report: no `person`, no `bicycle`, no traffic lights;
-evaluation covers 5 classes, not 80.
+COCO ids are mandatory (`car=3, motorcycle=4, bus=6, truck=8`) because
+Ultralytics returns `class_index + 1 = COCO id` for the 80-class checkpoints;
+any other numbering silently gives mAP = 0. The fine-tuned RQ5 model maps its
+0–3 indices with an explicit `class_ids=[3, 4, 6, 8]`.
+
+Consequence to state in the report: no `train`, `tram`, `heavy truck`,
+`light truck`, `person` or `bicycle`; evaluation covers 4 classes on 599
+images (25% of the 2,354 downloaded), not 5 classes on the full set.
 
 ### 2.2 Split policy
 
-Roboflow's own split is random, so consecutive dashcam frames can land in both
-train and test. Re-split **by source group** (filename prefix before the first
-`_`, e.g. `Random-Dudes-Carcam`, `SK8150`): all frames of a group go to exactly
-one of train / val / test. Target roughly 70 / 10 / 20, with the test split held
-out and frozen (hash + commit) before RQ1 runs.
+Roboflow's split is random and leaks: 30 base names appear in two splits.
+Re-split **by scene group** — the video uuid for frame sequences, the camera id
+(`SK8119`, `RI000712`) for stills. 463 groups over 599 images (12 multi-image,
+largest 24), assigned greedily to the 70 / 10 / 20 targets: **419 / 60 / 120**
+images, 4,123 / 622 / 1,210 boxes. The test split is frozen before RQ1 runs and
+recorded by sha256 in `data/annotations/hk_dataset_manifest.json`.
+
+### 2.3 Data-quality audit
+
+`scripts/build_hk_dataset.py` is the audit and the converter in one. It reports
+1,755 images / 8,711 boxes dropped because their category name is a README or
+dataset-version string, and prints the per-split, per-class counts. The report
+must cite this: the public dataset is 25% usable for class-aware evaluation,
+and the loss is a property of the export, not of our pipeline.
 
 ---
 
