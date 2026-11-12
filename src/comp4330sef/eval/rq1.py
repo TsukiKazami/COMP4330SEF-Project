@@ -215,6 +215,10 @@ def _evaluate_model(
         "mAP_50_95": scored["ap"]["mAP_50_95"],
         "mAP_50": scored["ap"]["mAP_50"],
         "mAP_75": scored["ap"]["mAP_75"],
+        "AP_small": scored["ap"]["AP_small"],
+        "AP_medium": scored["ap"]["AP_medium"],
+        "AP_large": scored["ap"]["AP_large"],
+        "AR_100": scored["ap"]["AR_100"],
         "precision": scored["operating_point"]["precision"],
         "recall": scored["operating_point"]["recall"],
         "f1": scored["operating_point"]["f1"],
@@ -265,7 +269,7 @@ def _evaluate_model(
             "detections": rel_path(detections_path),
             "metrics": rel_path(metrics_path),
         },
-        extra={
+         extra={
             "model": payload["model"],
             "dataset": payload["dataset"],
             "protocol": payload["protocol"],
@@ -273,6 +277,9 @@ def _evaluate_model(
             "precision": precision,
         },
     )
+
+    del results, model
+    torch.cuda.empty_cache()
 
     return row, scored, payload
 

@@ -5,7 +5,7 @@ defaults:
   conf: 0.25
   iou: 0.7
   half: false
-  max_det: 100 
+  max_det: 300 
   batch: 1
   device: 0
   seed: 0
