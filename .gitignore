@@ -238,5 +238,12 @@ data/images/
 data/triage/
 data/annotations/triage.csv
 
+# Annotation staging and local YOLO labels
+data/test_images/
+data/test_images_b/
+data/labels/
+data/labels_b/
+data/labels_draft/
+
 # Local caches
 .cache/
