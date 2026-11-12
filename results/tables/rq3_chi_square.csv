@@ -1,0 +1,9 @@
+group,factor,n,chi2,dof,p_value,cramers_v,min_expected,note
+all,scale_bucket,2427,548.6617,6,2.7435351269047133e-115,0.3362,0.93,expected count < 5
+yolov8m,scale_bucket,779,165.2036,6,4.676857937631554e-33,0.3256,0.23,expected count < 5
+yolov8n,scale_bucket,873,253.1899,6,8.534563921429069e-52,0.3808,0.33,expected count < 5
+yolov8s,scale_bucket,775,159.0852,6,9.250905713400058e-32,0.3204,0.34,expected count < 5
+all,category_id,2427,437.8527,9,1.1320092191562176e-88,0.2452,2.29,expected count < 5
+yolov8m,category_id,779,242.438,9,3.9330572451951046e-47,0.3221,0.76,expected count < 5
+yolov8n,category_id,873,115.0491,9,1.3740656604270364e-20,0.2096,0.55,expected count < 5
+yolov8s,category_id,775,132.7202,9,3.2686775081960654e-24,0.2389,1.01,expected count < 5

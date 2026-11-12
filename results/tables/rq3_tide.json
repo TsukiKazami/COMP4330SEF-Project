@@ -1,0 +1,74 @@
+{
+  "yolov8n": {
+    "ap": 28.5003,
+    "main_errors": {
+      "Cls": 17.421,
+      "Loc": 3.8583,
+      "Both": 0.3001,
+      "Dupe": 0.0,
+      "Bkg": 1.8798,
+      "Miss": 11.0018
+    },
+    "special_errors": {
+      "FalsePos": 10.8561,
+      "FalseNeg": 42.1483
+    },
+    "counts": {
+      "Cls": 374,
+      "Loc": 687,
+      "Both": 517,
+      "Dupe": 1,
+      "Bkg": 7149,
+      "Miss": 266
+    },
+    "max_dets": 100
+  },
+  "yolov8s": {
+    "ap": 35.2773,
+    "main_errors": {
+      "Cls": 18.321,
+      "Loc": 4.1742,
+      "Both": 0.3216,
+      "Dupe": 0.0004,
+      "Bkg": 3.0488,
+      "Miss": 12.5588
+    },
+    "special_errors": {
+      "FalsePos": 11.7524,
+      "FalseNeg": 38.2827
+    },
+    "counts": {
+      "Cls": 414,
+      "Loc": 495,
+      "Both": 533,
+      "Dupe": 1,
+      "Bkg": 5306,
+      "Miss": 210
+    },
+    "max_dets": 100
+  },
+  "yolov8m": {
+    "ap": 38.0158,
+    "main_errors": {
+      "Cls": 21.4014,
+      "Loc": 4.8716,
+      "Both": 0.1524,
+      "Dupe": 0.0,
+      "Bkg": 2.0249,
+      "Miss": 13.3411
+    },
+    "special_errors": {
+      "FalsePos": 9.509,
+      "FalseNeg": 46.8611
+    },
+    "counts": {
+      "Cls": 380,
+      "Loc": 412,
+      "Both": 357,
+      "Dupe": 0,
+      "Bkg": 4888,
+      "Miss": 136
+    },
+    "max_dets": 100
+  }
+}

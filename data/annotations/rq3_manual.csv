@@ -1,0 +1,13 @@
+sample_id,error_type,model,image_id,file_name,category,nearest_gt_category,nearest_iou,score,scale_bucket,crop,occlusion_level,text_density,note
+1,Miss,yolov8n,102,SK8331_JPG.rf.db22bba2a96b8abef884c82a711945fc.jpg,truck,,,,large,results\figures\rq3_crops\err_01_miss.png,,,
+2,Miss,yolov8s,56,SK8105_JPG.rf.9a36d01fc2d0256241449b74cf402a35.jpg,car,,,,large,results\figures\rq3_crops\err_02_miss.png,,,
+3,Miss,yolov8m,93,SK8286_JPG.rf.d9348e13650edd70ddf1da23a9be448d.jpg,truck,,,,medium,results\figures\rq3_crops\err_03_miss.png,,,
+4,Cls,yolov8n,76,SK8202_JPG.rf.c0f7d09f3fee45d14dbcd12e4d6f2013.jpg,bus,truck,0.9264,0.3504,large,results\figures\rq3_crops\err_04_cls.png,,,
+5,Cls,yolov8s,76,SK8202_JPG.rf.c0f7d09f3fee45d14dbcd12e4d6f2013.jpg,bus,truck,0.9297,0.4634,large,results\figures\rq3_crops\err_05_cls.png,,,
+6,Cls,yolov8m,17,SK7976_JPG.rf.b33f237a9d6f7c8dd5fd29e56042bcfe.jpg,bus,truck,0.9716,0.7368,large,results\figures\rq3_crops\err_06_cls.png,,,
+7,Bkg,yolov8n,96,SK8301_JPG.rf.2f01a9e3eae8ed3433388c20be1fdfe1.jpg,truck,truck,0.0,0.6226,medium,results\figures\rq3_crops\err_07_bkg.png,,,
+8,Bkg,yolov8s,96,SK8301_JPG.rf.2f01a9e3eae8ed3433388c20be1fdfe1.jpg,truck,truck,0.0,0.4864,medium,results\figures\rq3_crops\err_08_bkg.png,,,
+9,Bkg,yolov8m,96,SK8301_JPG.rf.2f01a9e3eae8ed3433388c20be1fdfe1.jpg,car,truck,0.0,0.5606,medium,results\figures\rq3_crops\err_09_bkg.png,,,
+10,Loc,yolov8n,72,SK8185_JPG.rf.06c7008c29d8e388ef615562fabd740a.jpg,truck,truck,0.1577,0.3881,large,results\figures\rq3_crops\err_10_loc.png,,,
+11,Loc,yolov8s,71,SK8182_JPG.rf.6b91f5108351e6791eb718bc37721fe0.jpg,truck,truck,0.4443,0.5297,large,results\figures\rq3_crops\err_11_loc.png,,,
+12,Loc,yolov8m,72,SK8185_JPG.rf.06c7008c29d8e388ef615562fabd740a.jpg,truck,truck,0.1417,0.695,large,results\figures\rq3_crops\err_12_loc.png,,,
