@@ -14,7 +14,7 @@ scenes**, keeping RQ5 (controlled ablation). Scope is compressed, not deleted.
 | Detection models | unmodified COCO-pretrained `yolov8n / s / m` for RQ1–RQ3 (zero-shot) |
 | Fine-tuning | RQ5 only, `yolov8s` (fallback `yolov8n` if the GPU is short on time) |
 | Precision / size | FP32, `imgsz=640`, batch logged per run |
-| Hardware | one machine: RTX 2070 SUPER 8 GB, logged in each runcard |
+| Hardware | Google Colab T4 16 GB, logged in each runcard |
 | Interventions | exactly one (CBAM **or** P2), chosen by the RQ3 diagnosis |
 | Negative result | valid; RQ5 reports the mechanism instead of a win |
 | Test set use | never trained on; frozen before RQ1 runs |
