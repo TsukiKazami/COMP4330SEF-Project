@@ -71,6 +71,12 @@ def build_parser() -> argparse.ArgumentParser:
     rq3.add_argument("--conf", type=float, default=0.25)
     rq3.add_argument("--match-iou", type=float, default=0.5)
 
+    models = subparsers.add_parser("models", help="RQ4: baseline vs P2 parameter and shape check")
+    models.add_argument("--scale", default="s", choices=["n", "s", "m"])
+    models.add_argument("--nc", type=int, default=4)
+    models.add_argument("--imgsz", type=int, default=640)
+    models.add_argument("--out", default=None)
+
     return parser
 
 
@@ -151,5 +157,10 @@ def main(argv: list[str] | None = None) -> int:
             conf=args.conf,
             match_iou=args.match_iou,
         )
+
+    if args.command == "models":
+        from comp4330sef.models.build import run_compare
+
+        return run_compare(scale=args.scale, nc=args.nc, imgsz=args.imgsz, out=args.out)
 
     raise SystemExit(f"unknown command {args.command!r}")

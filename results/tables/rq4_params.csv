@@ -1,0 +1,3 @@
+variant,scale,nc,params,gflops_640,levels,strides,anchors,head_shapes,delta_params,delta_params_pct,delta_gflops,delta_gflops_pct
+yolov8s,s,4,11137148,28.6,3,8/16/32,8400,80x80/40x40/20x20,0,0.0,0.0,0.0
+yolov8s-p2,s,4,10638016,36.9,4,4/8/16/32,34000,160x160/80x80/40x40/20x20,-499132,-4.48,8.3,29.02
