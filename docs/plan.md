@@ -93,6 +93,10 @@ Every RQ must appear in the slides as **one table + one figure**.
 | RQ4 | which single change does the diagnosis justify? | `configs/models/*.yaml`, module in `src/comp4330sef/models/`, param-delta + shape check | one intervention only |
 | RQ5 | does it win under controlled ablation, and why? | `rq5_ablation.csv`, paired t-test, per-class deltas, **error-composition comparison (same taxonomy as RQ3, TIDE not re-run)** | `yolov8s`, **30 epochs**, identical hyper-parameters and data order; noise-floor rerun **skipped** (state as limitation) |
 
+RQ3–RQ5 run at the joint optimum found in RQ2: `conf=0.25`, NMS `iou=0.3`
+(the matching IoU stays at the protocol value 0.5). RQ1 intentionally keeps the
+default `0.25 / 0.7` so that RQ2 can show the default is F1-suboptimal.
+
 RQ4 depends on RQ3; RQ5 depends on RQ4. RQ1–RQ3 are independent of each other in
 execution but RQ2's optimal configuration feeds RQ3.
 
