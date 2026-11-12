@@ -97,6 +97,16 @@ RQ3–RQ5 run at the joint optimum found in RQ2: `conf=0.25`, NMS `iou=0.3`
 (the matching IoU stays at the protocol value 0.5). RQ1 intentionally keeps the
 default `0.25 / 0.7` so that RQ2 can show the default is F1-suboptimal.
 
+RQ3 diagnosis → intervention. Background confusion is negligible (Bkg 1.9–3.0
+dAP), so the attention-module branch of the plan is not triggered. Missed
+detections are the second dAP term (11.0–13.3) and 50–65% of all error
+instances, 94% of them small objects (χ²=548.7, df=6, p<1e-100, V=0.34);
+AP_small (0.06–0.10) is six to ten times below AP_large (0.65–0.79). The single
+intervention is therefore a P2 detection head. Class confusion is the largest
+dAP term (17.4–21.4) but the confusion table confines it to car/truck/bus, i.e.
+the COCO-to-HK class boundary, which no neck module addresses; it is reported
+as a dataset limitation.
+
 RQ4 depends on RQ3; RQ5 depends on RQ4. RQ1–RQ3 are independent of each other in
 execution but RQ2's optimal configuration feeds RQ3.
 
