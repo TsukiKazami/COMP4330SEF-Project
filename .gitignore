@@ -244,6 +244,7 @@ data/test_images_b/
 data/labels/
 data/labels_b/
 data/labels_draft/
+data/hk/
 
 # Local caches
 .cache/

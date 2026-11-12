@@ -1,0 +1,64 @@
+{
+  "generated_utc": "2026-11-12T12:44:59+00:00",
+  "source": "datasets/hk_vehicle",
+  "source_export": "Roboflow hong kong vehicle detection v3, COCO JSON, MIT",
+  "class_map": {
+    "car": 3,
+    "taxi": 3,
+    "motorcycle": 4,
+    "bus": 6,
+    "mini bus": 6,
+    "truck": 8
+  },
+  "model_classes": [
+    3,
+    4,
+    6,
+    8
+  ],
+  "split_rule": "deterministic greedy by scene group",
+  "ratios": {
+    "train": 0.7,
+    "valid": 0.1,
+    "test": 0.2
+  },
+  "dropped": {
+    "images": 1755,
+    "annotations": 8711
+  },
+  "splits": {
+    "train": {
+      "images": 419,
+      "annotations": 4123,
+      "per_class": {
+        "car": 2595,
+        "motorcycle": 358,
+        "bus": 588,
+        "truck": 582
+      },
+      "sha256": "862e982d78cb7d0fb739253d6d353b25fde9c7620174bd4b7606fd0284e672e3"
+    },
+    "valid": {
+      "images": 60,
+      "annotations": 622,
+      "per_class": {
+        "car": 400,
+        "motorcycle": 19,
+        "bus": 107,
+        "truck": 96
+      },
+      "sha256": "522fe03d633561f0080e1dbf9ee081594c1febfaae8be1b4f074e17df8ba04b4"
+    },
+    "test": {
+      "images": 120,
+      "annotations": 1210,
+      "per_class": {
+        "car": 760,
+        "motorcycle": 31,
+        "bus": 226,
+        "truck": 193
+      },
+      "sha256": "81f79926dac564752135f245b75821bdeeb6036e8c24607c6689423530516b3b"
+    }
+  }
+}
