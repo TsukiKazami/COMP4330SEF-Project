@@ -49,6 +49,20 @@ def build_parser() -> argparse.ArgumentParser:
     rq1.add_argument("--iters", type=int, default=100)
     rq1.add_argument("--all-classes", action="store_true", help="keep off-protocol classes in P/R/F1")
 
+    rq2 = subparsers.add_parser("rq2", help="RQ2: confidence / NMS-IoU sweep across sizes")
+    rq2.add_argument("--config", default="configs/models.yaml")
+    rq2.add_argument("--models", nargs="+", default=["yolov8n", "yolov8s", "yolov8m"])
+    rq2.add_argument("--gt", default="data/annotations/hk_test_coco.json")
+    rq2.add_argument("--images", default="data/hk/images/test")
+    rq2.add_argument("--tag", default="hk_test")
+    rq2.add_argument("--confs", nargs="+", type=float, default=None)
+    rq2.add_argument("--nms-ious", nargs="+", type=float, default=None)
+    rq2.add_argument("--match-iou", type=float, default=None)
+    rq2.add_argument("--table", default=None)
+    rq2.add_argument("--best-table", default=None)
+    rq2.add_argument("--answer", default=None)
+    rq2.add_argument("--acc-batch", type=int, default=8)
+
     return parser
 
 
@@ -98,6 +112,24 @@ def main(argv: list[str] | None = None) -> int:
             warmup=args.warmup,
             iterations=args.iters,
             restrict_classes=not args.all_classes,
+        )
+
+    if args.command == "rq2":
+        from comp4330sef.sweep.conf_iou import run_rq2
+
+        return run_rq2(
+            config_path=args.config,
+            models=tuple(args.models),
+            gt=args.gt,
+            images=args.images,
+            tag=args.tag,
+            confs=args.confs,
+            nms_ious=args.nms_ious,
+            match_iou=args.match_iou,
+            table=args.table,
+            best_table=args.best_table,
+            answer_path=args.answer,
+            acc_batch=args.acc_batch,
         )
 
     raise SystemExit(f"unknown command {args.command!r}")
