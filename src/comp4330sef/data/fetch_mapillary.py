@@ -68,6 +68,7 @@ IMAGES_DIR = REPO_ROOT / "data" / "images"
 ANNOTATIONS_DIR = REPO_ROOT / "data" / "annotations"
 TRIAGE_DIR = REPO_ROOT / "data" / "triage"
 CACHE_DIR = REPO_ROOT / ".cache"
+CACHE_FILE = CACHE_DIR / "mapillary_records.json"
 
 CSV_COLUMNS = (
     "image_id",
@@ -460,6 +461,25 @@ def _git_sha() -> str:
         return "unknown"
 
 
+def load_cache() -> dict[str, dict[str, Any]]:
+    if not CACHE_FILE.exists():
+        return {}
+    try:
+        payload = json.loads(CACHE_FILE.read_text(encoding="utf-8"))
+    except Exception as exc:
+        print(f"[warn] ignoring unreadable cache {CACHE_FILE}: {exc}")
+        return {}
+    if not isinstance(payload, dict):
+        return {}
+    print(f"cache     : loaded {len(payload)} records from .cache/mapillary_records.json")
+    return payload
+
+
+def save_cache(records: dict[str, dict[str, Any]]) -> None:
+    CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    CACHE_FILE.write_text(json.dumps(records, ensure_ascii=False), encoding="utf-8")
+
+
 def run_fetch(args: argparse.Namespace) -> int:
     token = _token()
     session = _session()
@@ -491,7 +511,10 @@ def run_fetch(args: argparse.Namespace) -> int:
     def urban_pool() -> dict[str, dict[str, Any]]:
         return {mid: rec for mid, rec in records.items() if rec.get("region") in allowed}
 
-    per_tile = max(50, math.ceil(args.candidates / 4))
+    if args.per_region:
+        per_tile = args.per_region
+    else:
+        per_tile = max(50, math.ceil(args.candidates / 4))
     per_tile = min(per_tile, 2000)
 
     print(f"preset    : {args.preset}  ({len(regions)} region(s))")
@@ -771,6 +794,8 @@ def build_parser() -> argparse.ArgumentParser:
                         help="urban = 20 dense district boxes (default); all = whole HK; custom = --bbox")
     parser.add_argument("--bbox", nargs=4, type=float, default=None,
                         metavar=("WEST", "SOUTH", "EAST", "NORTH"))
+    parser.add_argument("--per-region", type=int, default=50,
+                        help="max raw records per region (0 = derive from --candidates)")
     parser.add_argument("--cols", type=int, default=0, help="bbox tiles horizontally (0 = auto)")
     parser.add_argument("--rows", type=int, default=0, help="bbox tiles vertically (0 = auto)")
     parser.add_argument("--max-tile-area", type=float, default=DEFAULT_TILE_AREA,
@@ -798,6 +823,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--sheets-only", action="store_true", help="only re-render contact sheets")
     parser.add_argument("--per-sheet", type=int, default=20)
     parser.add_argument("--sheet-columns", type=int, default=4)
+    parser.add_argument("--reset-cache", action="store_true", help="ignore the local record cache")
     return parser
 
 

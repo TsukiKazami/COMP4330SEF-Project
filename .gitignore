@@ -235,6 +235,7 @@ datasets/
 # Local raw / normalised imagery
 data/raw/
 data/images/
+data/triage/
 
 # Local caches
 .cache/
