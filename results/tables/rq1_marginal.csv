@@ -1,3 +1,3 @@
 dataset,from_model,to_model,from_params,to_params,delta_params_m,delta_mAP_50_95,delta_mAP_50,map_per_mparam,delta_latency_ms
-hk_test,yolov8n,yolov8s,3157200,11166560,8.01,0.0436,0.0688,0.0054,2.24
-hk_test,yolov8s,yolov8m,11166560,25902640,14.74,0.0208,0.0336,0.0014,12.54
+hk_test,yolov8n,yolov8s,3157200,11166560,8.01,0.0433,0.0689,0.0054,4.57
+hk_test,yolov8s,yolov8m,11166560,25902640,14.74,0.0216,0.0328,0.0015,10.24
