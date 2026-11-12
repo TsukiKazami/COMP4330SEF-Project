@@ -1,0 +1,74 @@
+{
+  "per_model_best": [
+    {
+      "model": "yolov8n",
+      "nms_iou": 0.5,
+      "conf": 0.2,
+      "f1": 0.4847,
+      "precision": 0.6,
+      "recall": 0.4066
+    },
+    {
+      "model": "yolov8s",
+      "nms_iou": 0.3,
+      "conf": 0.3,
+      "f1": 0.5377,
+      "precision": 0.6941,
+      "recall": 0.4388
+    },
+    {
+      "model": "yolov8m",
+      "nms_iou": 0.3,
+      "conf": 0.3,
+      "f1": 0.5556,
+      "precision": 0.677,
+      "recall": 0.4711
+    }
+  ],
+  "shared_best": {
+    "nms_iou": 0.3,
+    "conf": 0.25,
+    "mean_f1": 0.5239
+  },
+  "shared_regret": [
+    {
+      "model": "yolov8n",
+      "own_best_f1": 0.4847,
+      "f1_at_shared": 0.4822,
+      "loss": 0.0025
+    },
+    {
+      "model": "yolov8s",
+      "own_best_f1": 0.5377,
+      "f1_at_shared": 0.536,
+      "loss": 0.0017
+    },
+    {
+      "model": "yolov8m",
+      "own_best_f1": 0.5556,
+      "f1_at_shared": 0.5534,
+      "loss": 0.0022
+    }
+  ],
+  "max_regret": 0.0025,
+  "regret_tolerance": 0.01,
+  "one_config_serves_all": true,
+  "dataset": "hk_test",
+  "confs": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.7
+  ],
+  "nms_ious": [
+    0.3,
+    0.5,
+    0.7
+  ],
+  "match_iou": 0.5
+}
