@@ -18,7 +18,7 @@ def main() -> int:
     parser.add_argument("--conf", type=float, default=0.15)
     parser.add_argument("--iou", type=float, default=0.7)
     parser.add_argument("--imgsz", type=int, default=1280)
-    parser.add_argument("--batch", type=int, default=8)
+    parser.add_argument("--batch", type=int, default=4)
     parser.add_argument("--device", default="0")
     args = parser.parse_args()
 
