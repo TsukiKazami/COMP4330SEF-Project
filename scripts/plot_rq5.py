@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from turtle import left
 
 import matplotlib
 
@@ -59,7 +60,7 @@ def main() -> int:
     left.set_xticks(range(len(metrics)))
     left.set_xticklabels([label for _, label in metrics])
     left.set_ylabel("AP")
-    left.set_title("(a) the intervention misses its target")
+    left.set_title("(a) AP by object size")
     left.set_ylim(0, 1.02)
     left.grid(alpha=0.3, axis="y")
     left.legend(fontsize=8)
