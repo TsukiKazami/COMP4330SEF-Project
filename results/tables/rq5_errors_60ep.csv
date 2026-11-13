@@ -1,0 +1,5 @@
+error_type,yolov8s,yolov8s-p2
+Bkg,70,50
+Cls,97,105
+Loc,27,23
+Miss,136,151

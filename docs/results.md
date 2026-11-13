@@ -18,7 +18,7 @@ SUPER was abandoned after a driver-level BSOD during the first RQ1 attempt.
 | RQ2 | do thresholds need to differ by size? | No: one configuration (conf 0.25, NMS IoU 0.3) is within 0.0025 F1 of every model's own optimum. The default NMS IoU 0.7 is F1-suboptimal. |
 | RQ3 | which errors dominate, tied to scene attributes? | Misses dominate the count (50–65% of instances, 94% of them small objects, χ²=548.7, p<1e-100); class confusion dominates the dAP (17.4–21.4) but sits entirely inside car/truck/bus. |
 | RQ4 | which single change does the diagnosis justify? | A P2 (stride-4) detection head: background errors are negligible, so the attention branch is not triggered. P2 costs +29% FLOPs and −4.5% parameters. |
-| RQ5 | does it win under controlled ablation? | No. mAP 0.4389 vs 0.4638, per-image F1 −0.0464 [−0.0663, −0.0265], p=9.8e-6. Mechanism: cold start, not converged in 30 epochs, and a disrupted pretrained pyramid. |
+| RQ5 | does it win under controlled ablation? | At the pre-registered 30 epochs, no: mAP 0.4389 vs 0.4638, per-image F1 −0.0464 [−0.0663, −0.0265], p=9.8e-6. With a matched 60-epoch budget the deficit disappears — mAP 0.4966 vs 0.4836 (+0.0130), AP_small +0.010, AR@100 +0.018 — but the operating-point F1 difference is exactly zero (p=0.999) at +24% latency. The 30-epoch loss was an optimisation deficit, not an architectural one. |
 
 ---
 
@@ -235,10 +235,44 @@ The same checkpoint moves from 0.2235 mAP@50:95 zero-shot (RQ1) to 0.4638
 
 ---
 
+### 6a. Follow-up: a matched 60-epoch budget
+
+The 30-epoch comparison is confounded by the intervention's cold start, so both
+variants were retrained with 60 epochs and otherwise identical settings. The
+baseline improves on its own (0.4638 → 0.4836), and P2 crosses it:
+
+| variant | mAP@50:95 | mAP@50 | P | R | F1 | latency | detections |
+|---|---|---|---|---|---|---|---|
+| baseline 60 ep | 0.4836 | 0.7025 | 0.8266 | 0.7645 | 0.7943 | 11.65 ms | 3,087 |
+| p2 60 ep | **0.4966** | **0.7259** | 0.8376 | 0.7587 | **0.7962** | 14.48 ms | 4,549 |
+
+| | AP_small | AP_medium | AP_large | AR@100 |
+|---|---|---|---|---|
+| baseline 60 ep | 0.3490 | 0.8256 | 0.8676 | 0.5189 |
+| p2 60 ep | **0.3591** | **0.8405** | 0.8496 | **0.5373** |
+
+The paired test on per-image F1 is now exactly null: −0.0000 [−0.0197, +0.0196],
+t = −0.0015, p = 0.999, wins 51 / losses 47 / ties 22. Per class the gain is
+concentrated in the smallest and rarest class (motorcycle 0.2748 → 0.3340);
+car, bus and truck are within 0.007 of each other.
+
+**Revised reading.** The stride-4 head does what it was designed to do — AP_small
+rises by 0.010, AP_medium by 0.015, AR@100 by 0.018 — but the effect is too
+small to move the operating point, and it costs +24% latency and +29% FLOPs for
+4.5% fewer parameters. The 30-epoch deficit was an optimisation artefact of the
+cold start (219 of 437 tensors transferred, random P2 branch and head), not an
+architectural penalty: given the same budget the re-routed pyramid recovers
+completely, including the medium and large buckets that had appeared damaged.
+RQ5 therefore ends as a qualified negative: the diagnosis was right, the
+mechanism works, and the effect does not pay for its inference cost.
+
 ## 7. Cross-cutting findings
 
+
+
 1. **Domain fine-tuning beats architecture selection** on this data: +0.240 mAP
-   from 419 images, against +0.065 from scaling n→m or −0.025 from P2.
+   from 419 images, against +0.065 from scaling n→m, or +0.013 from P2 even
+   after doubling its training budget.
 2. **Small objects are the bottleneck** at every level of analysis: AP_small
    0.06–0.11 against AP_large 0.65–0.79; 94% of misses are small; the frame is
    640×640 letterbox with a median box of ≈11 px.
