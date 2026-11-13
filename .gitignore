@@ -236,3 +236,12 @@ datasets/
 
 # Local caches
 .cache/
+
+# Legacy Mapillary artefacts
+data/images/
+data/raw/
+data/triage/
+data/test_images/
+data/test_images_b/
+data/labels_draft/
+data/annotations/triage.csv
