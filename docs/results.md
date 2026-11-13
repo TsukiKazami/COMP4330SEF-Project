@@ -22,6 +22,23 @@ SUPER was abandoned after a driver-level BSOD during the first RQ1 attempt.
 
 ---
 
+### 0.1 Pre-registered protocol
+
+The plan was fixed before the runs (it lived in `docs/plan.md`, removed at the
+end of the sprint; the file is in git history). Its binding decisions, so that
+the reader can tell protocol from post-hoc choice:
+
+- Five RQs, each delivered as one table and one figure.
+- The test split was frozen (hash committed) before any RQ1 run.
+- RQ2 counts a shared configuration as adequate when no model loses more than
+  **0.01 F1** against its own optimum; that tolerance was set before M2.
+- RQ4 permits **exactly one** intervention, chosen by a rule written before RQ3:
+  background confusion → attention module, small-object misses → P2 head.
+- RQ5 trains both variants for **30 epochs** with identical data order and seed,
+  and reports a paired test; a second seed is out of scope and stated as such.
+
+---
+
 ## 1. Data
 
 | Item | Value |
@@ -126,11 +143,14 @@ instance taxonomy counts errors at the operating point conf 0.25.
 
 **TIDE dAP** (percentage points of mAP recoverable if that error were fixed):
 
-| model | Cls | Miss | Loc | Bkg | Dupe | TIDE AP |
-|---|---|---|---|---|---|---|
-| n | 17.42 | 11.00 | 3.86 | 1.88 | 0.00 | 28.50 |
-| s | 18.32 | 12.56 | 4.17 | 3.05 | 0.00 | 35.28 |
-| m | 21.40 | 13.34 | 4.87 | 2.02 | 0.00 | 38.02 |
+| model | Cls | Miss | Loc | Bkg | Both | Dupe | TIDE AP |
+|---|---|---|---|---|---|---|---|
+| n | 17.42 | 11.00 | 3.86 | 1.88 | 0.30 | 0.00 | 28.50 |
+| s | 18.32 | 12.56 | 4.17 | 3.05 | 0.32 | 0.00 | 35.28 |
+| m | 21.40 | 13.34 | 4.87 | 2.02 | 0.15 | 0.00 | 38.02 |
+
+`Both` is TIDE's `OtherError`: an error that would need both the class and the box
+corrected. It never exceeds 0.32 dAP, so it does not change the ranking below.
 
 **Instance taxonomy at the operating point** (each error counted once):
 
