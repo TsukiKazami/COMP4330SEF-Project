@@ -77,6 +77,22 @@ def build_parser() -> argparse.ArgumentParser:
     models.add_argument("--imgsz", type=int, default=640)
     models.add_argument("--out", default=None)
 
+    rq5 = subparsers.add_parser("rq5", help="RQ5: P2 controlled ablation")
+    rq5.add_argument("--train", action="store_true", help="fine-tune the variants")
+    rq5.add_argument("--no-evaluate", action="store_true", help="skip the evaluation pass")
+    rq5.add_argument("--variants", nargs="+", default=["baseline", "p2"])
+    rq5.add_argument("--epochs", type=int, default=30)
+    rq5.add_argument("--batch", type=int, default=8)
+    rq5.add_argument("--seed", type=int, default=0)
+    rq5.add_argument("--workers", type=int, default=2)
+    rq5.add_argument("--device", default=None)
+    rq5.add_argument("--conf", type=float, default=0.25)
+    rq5.add_argument("--nms-iou", type=float, default=0.3)
+    rq5.add_argument("--timing-iters", type=int, default=100)
+    rq5.add_argument("--gt", default="data/annotations/hk_test_coco.json")
+    rq5.add_argument("--images", default="data/hk/images/test")
+    rq5.add_argument("--tag", default="hk_test")   
+
     return parser
 
 
@@ -162,5 +178,25 @@ def main(argv: list[str] | None = None) -> int:
         from comp4330sef.models.build import run_compare
 
         return run_compare(scale=args.scale, nc=args.nc, imgsz=args.imgsz, out=args.out)
+
+    if args.command == "rq5":
+        from comp4330sef.eval.rq5 import run_rq5
+
+        return run_rq5(
+            train=args.train,
+            evaluate=not args.no_evaluate,
+            variants=tuple(args.variants),
+            epochs=args.epochs,
+            batch=args.batch,
+            seed=args.seed,
+            workers=args.workers,
+            device=args.device,
+            conf=args.conf,
+            nms_iou=args.nms_iou,
+            timing_iters=args.timing_iters,
+            gt=args.gt,
+            images=args.images,
+            tag=args.tag,
+        )
 
     raise SystemExit(f"unknown command {args.command!r}")
