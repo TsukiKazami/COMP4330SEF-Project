@@ -179,10 +179,10 @@ Then unzip over the repository and run the four `scripts/plot_rq*.py` locally.
 - The T4 is shared: repeated latency measurements for one checkpoint varied by
   up to 20%, so only the ordering and the n:m ratio are load-bearing (see the
   sensitivity note in `docs/results.md`).
-- `configs/hk4.yaml` contains an absolute path because
-  `ultralytics.data.utils.check_det_dataset` resolves relative paths against the
-  global datasets directory. `rq5` regenerates a local copy at run time, so the
-  committed file never has to be edited by hand — an important detail on Colab.
+- `configs/hk4.yaml` keeps a relative `path` so the file carries no machine-specific
+  path. At run time `rq5` rewrites that line to an absolute path, because
+  Ultralytics resolves a relative `path` against its global datasets directory —
+  an important detail on Colab, where the checkout lives somewhere else.
 - `scripts/colab_cli.py` exists only so that `PYTHONPATH=src` works; locally,
   prefer `uv run comp4330 …`.
 - AR/AP follow the four-class protocol: COCO's 80-class taxonomy is never
