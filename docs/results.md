@@ -3,7 +3,7 @@
 Consolidated findings for RQ1–RQ5. Every number below comes from a committed
 table under `results/tables/` and a runcard under `results/runs/` (ignored by
 git). Frozen artefacts: the task set in `data/annotations/` and
-`hk_dataset_manifest.json`. Code state: `c545fb4`.
+`hk_dataset_manifest.json`.
 
 Hardware: one Google Colab T4 (16 GB), fp32, `imgsz=640`. The local RTX 2070
 SUPER was abandoned after a driver-level BSOD during the first RQ1 attempt.
@@ -24,8 +24,7 @@ SUPER was abandoned after a driver-level BSOD during the first RQ1 attempt.
 
 ### 0.1 Pre-registered protocol
 
-The plan was fixed before the runs (it lived in `docs/plan.md`, removed at the
-end of the sprint; the file is in git history). Its binding decisions, so that
+The plan was fixed before the runs. Its binding decisions, so that
 the reader can tell protocol from post-hoc choice:
 
 - Five RQs, each delivered as one table and one figure.

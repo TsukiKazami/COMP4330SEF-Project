@@ -1,10 +1,4 @@
-"""RQ5 figure: the P2 ablation and the reason it lost.
-
-Panel (a) splits AP by object size (from the evaluation runcard), which is where
-the intervention was supposed to pay off. Panel (b) shows the validation curve
-of both fine-tunes: the P2 model starts from zero because its new branch and
-head are randomly initialised, and is still climbing when the budget runs out.
-"""
+"""RQ5 figure: the P2 ablation and the reason it lost."""
 
 from __future__ import annotations
 
@@ -92,16 +86,17 @@ def main() -> int:
     right.legend(fontsize=8)
     right.margins(x=0.02)
 
-    paired = Path("results/tables/rq5_paired_test.csv")
+    paired_meta = card.get("extra", {}).get("paired", {})
     note = ""
-    if paired.exists():
-        row = pd.read_csv(paired).iloc[0]
+    if paired_meta.get("mean_difference") is not None:
         note = (
-            f"paired per-image F1: {row['mean_difference']:+.4f} "
-            f"[{row['ci95_low']:+.4f}, {row['ci95_high']:+.4f}], "
-            f"p={row['p_value']:.1e}, wins {int(row['modified_wins'])}/{int(row['baseline_wins'])}"
+            f"paired per-image F1: {paired_meta['mean_difference']:+.4f} "
+            f"[{paired_meta['ci95_low']:+.4f}, {paired_meta['ci95_high']:+.4f}], "
+            f"p={paired_meta['p_value']:.2g}, "
+            f"wins {int(paired_meta['modified_wins'])}/{int(paired_meta['baseline_wins'])}"
         )
-    fig.suptitle(f"hk_test, 4 classes, 30 epochs, T4 — P2 does not beat the baseline. {note}", fontsize=9)
+    epochs = card["config"].get("epochs", 30)
+    fig.suptitle(f"hk_test, 4 classes, {epochs} epochs, T4 — {note}", fontsize=9)
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
