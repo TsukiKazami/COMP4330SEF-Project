@@ -1,0 +1,2 @@
+images,mean_f1_baseline,mean_f1_modified,mean_difference,sd_difference,ci95_low,ci95_high,t_statistic,p_value,cohens_d,modified_wins,baseline_wins,ties
+120,0.7874,0.741,-0.0464,0.1101,-0.0663,-0.0265,-4.6192,9.828206593210429e-06,-0.4217,35,66,19

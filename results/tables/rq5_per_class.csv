@@ -1,0 +1,9 @@
+variant,category_id,name,AP_50_95,AP_50,gt_instances
+baseline,6,bus,0.5387,0.743,226
+baseline,8,truck,0.5251,0.6614,193
+baseline,3,car,0.5217,0.8086,760
+baseline,4,motorcycle,0.2696,0.4903,31
+p2,3,car,0.5101,0.8114,760
+p2,6,bus,0.4871,0.7418,226
+p2,8,truck,0.4546,0.6103,193
+p2,4,motorcycle,0.304,0.4931,31
