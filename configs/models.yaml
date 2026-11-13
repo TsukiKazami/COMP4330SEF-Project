@@ -18,9 +18,6 @@ models:
   yolov8m:
     weights: weights/yolov8m.pt
 
-dummy:
-  data: datasets/coco8.yaml
-
 eval:
   conf_floor: 0.001
   iou_match: 0.5

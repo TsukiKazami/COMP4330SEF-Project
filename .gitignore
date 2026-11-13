@@ -226,25 +226,13 @@ docs/reference
 runs/
 yolo26n.pt
 
-# Model weights (large binaries, only the manifest is committed)
+# Model weights
 weights/*.pt
 
-# Downloaded sample datasets
-datasets/
-
-# Local raw / normalised imagery
-data/raw/
-data/images/
-data/triage/
-data/annotations/triage.csv
-
-# Annotation staging and local YOLO labels
-data/test_images/
-data/test_images_b/
-data/labels/
-data/labels_b/
-data/labels_draft/
+# Local imagery and derived artefacts
 data/hk/
+data/hk_data.zip
+datasets/
 
 # Local caches
 .cache/
